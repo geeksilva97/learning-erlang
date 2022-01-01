@@ -20,7 +20,6 @@
 start_link(Value, LeaseTime) ->
   gen_server:start_link(?MODULE, [Value, LeaseTime], []).
 
-
 create(Value, LeaseTime) ->
   sc_sup:start_child(Value, LeaseTime).
 
