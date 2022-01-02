@@ -13,7 +13,7 @@ insert(Key, Value) ->
 lookup(Key) ->
   try
     {ok, Pid} = sc_store:lookup(Key),
-    {ok, Value} = sc_element:lookup(Pid),
+    {ok, Value} = sc_element:fetch(Pid),
     {ok, Value}
   catch
     _Class:_Exception ->
