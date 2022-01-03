@@ -9,7 +9,7 @@ delayed_calc_sum(Parent, N) ->
   Sum = delayed_calc_sum2(N),
   Parent ! {self(), Sum},
   exit(normal).
-  
+
 delayed_calc_sum2(1) -> 1;
 delayed_calc_sum2(N) ->
  N + delayed_calc_sum2(N-1).

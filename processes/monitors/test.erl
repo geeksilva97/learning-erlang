@@ -3,7 +3,11 @@
 % 1. erl
 % 2. spawn(fun() -> test:start() end). 
 -module(test).
--export([start/0,test/0]).
+-export([start/0,test/0, run/0]).
+
+run() ->
+   spawn(fun() -> start() end),
+   ok.
 
 start() ->
      io:format("Parent (~p): started!\n",[self()]),
@@ -11,10 +15,6 @@ start() ->
      io:format(
         "Parent (~p): child ~p spawned. Waiting for 5 seconds\n",[self(),P]),
      timer:sleep(5000),
-     % P2 = spawn_link(?MODULE,test,[]),
-     % io:format(
-     %    "Parent (~p): child ~p spawned. Waiting for 10 seconds\n",[self(),P2]),
-     % timer:sleep(10000),
      io:format("Parent (~p): dies out of boredom\n",[self()]),
      ok. 
 
@@ -25,10 +25,10 @@ test() ->
 
 loop() ->
      receive
-          Q = {'EXIT',_,_} ->
-                io:format("Child process died together with parent (~p)\n",[Q]);
-          Q ->
-                io:format("Something else happened... (~p)\n",[Q])
+         Q = {'EXIT',_,_} ->
+            io:format("Child process died together with parent (~p)\n",[Q]);
+         Q ->
+            io:format("Something else happened... (~p)\n",[Q])
      after
           2000 -> io:format("Child (~p): still alive after a timeout...\n", [self()]), loop()
      end.
